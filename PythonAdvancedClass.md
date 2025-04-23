@@ -1,3 +1,4 @@
+```python
 from abc import ABC, abstractmethod
 from collections import namedtuple
 from dataclasses import dataclass
@@ -135,3 +136,4 @@ print(c.greet()) # Hello from A (MRO)
 print(person_named.name, person_named.age) # Bob 25 (NamedTuple)
 print(user1) # User(id=1, name='John', active=True) (DataClass)
 print(e.name) # Charlie (Slots)
+```
