@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Analyse Technique — Manuel Complet + Atlas Visuel</title>
+  <meta name="description" content="Guide détaillé d’analyse technique avec objectifs, conditions idéales, procédures d’utilisation, limites et exemples visuels (RSI, Stochastique, MACD, Bollinger, Ichimoku, Fibonacci/OTE, Order Blocks, VWAP, Pivots, ADX/ATR, Breakouts). Contenu éducatif, pas de conseil d’investissement." />
+  <style>
+    :root{
+      --bg:#0b0b0f;--panel:#16161b;--muted:#1f2026;--text:#d6d7dc;--sub:#a6a8b2;
+      --accent:#f1c40f;--accent-soft:rgba(241,196,15,.18);
+      --good:#53d769;--bad:#ff5e57;--grid:#2a2b33;--neutral:#888ea3;
+      --line:#2a2b33;--radius:14px;--shadow:0 10px 30px rgba(0,0,0,.35)
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+    a{color:var(--accent);text-decoration:none}
+    h1,h2,h3,h4{margin:0 0 .5rem;line-height:1.2}
+    h1{font-size:2.2rem} h2{font-size:1.55rem;color:var(--accent)} h3{font-size:1.15rem;color:#ffd54d}
+    p{margin:.5rem 0 1rem}
+    header.hero{background:linear-gradient(135deg,#111218 0%, #0b0b0f 60%), radial-gradient(1200px 600px at 90% -10%, rgba(241,196,15,.08), transparent 70%);border-bottom:1px solid var(--line)}
+    .container{max-width:1120px;margin:0 auto;padding:24px}
+    .hero-inner{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center}
+    @media (max-width:980px){.hero-inner{grid-template-columns:1fr}}
+    .badge{display:inline-block;padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--sub);font-size:.85rem;background:rgba(255,255,255,.02)}
+    .subtitle{color:var(--sub);max-width:60ch}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#1b1b1b;font-weight:700;padding:10px 14px;border-radius:12px;border:0;cursor:pointer;text-decoration:none;box-shadow:0 8px 18px var(--accent-soft)}
+    .btn.secondary{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+    .cta{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
+    .section{margin:32px 0}
+    .grid{display:grid;gap:16px}
+    .grid.columns-3{grid-template-columns:repeat(3,1fr)}
+    .grid.columns-2{grid-template-columns:repeat(2,1fr)}
+    @media (max-width:980px){.grid.columns-3{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:680px){.grid.columns-3,.grid.columns-2{grid-template-columns:1fr}}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+    .example{background:linear-gradient(180deg,rgba(241,196,15,.08),transparent);border:1px dashed rgba(241,196,15,.35);border-radius:12px;padding:14px;margin-top:8px}
+    .warning{border:1px solid rgba(255,180,0,.6);background:linear-gradient(180deg, rgba(255,180,0,.12), rgba(255,180,0,.06));color:#ffe8a6;border-radius:12px;padding:14px}
+    .toc{display:flex;flex-wrap:wrap;gap:10px}
+    .toc a{padding:8px 10px;border:1px solid var(--line);border-radius:10px;color:var(--sub);background:var(--muted);text-decoration:none;font-size:.92rem}
+    .divider{height:1px;background:linear-gradient(90deg, transparent, var(--line), transparent);margin:24px 0}
+    ul,ol{margin:.3rem 0 0 1.2rem}
+    li{margin:.25rem 0}
+    .mini{color:var(--sub);font-size:.92rem}
+    .quote{border-left:3px solid var(--accent);padding:10px 14px;background:rgba(241,196,15,.06);border-radius:8px}
+    .exp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:8px}
+    @media (max-width:680px){.exp-grid{grid-template-columns:1fr}}
+    .exp{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:12px;padding:12px}
+    .exp strong{color:#ffea8a}
+    svg{width:100%;height:90px}
+    svg text{font-family:system-ui,Segoe UI,Roboto;fill:#a6a8b2;font-size:10px}
+    .st-grid{stroke:var(--grid);stroke-width:1}
+    .st-accent{stroke:var(--accent)}
+    .st-good{stroke:var(--good)}
+    .st-bad{stroke:var(--bad)}
+    .st-neutral{stroke:var(--neutral)}
+    .st-thick{stroke-width:2}
+    .st-dash{stroke-dasharray:4 3}
+    .fill-kumo{fill:rgba(241,196,15,.18);stroke:var(--accent)}
+    .fill-range{fill:none;stroke:var(--accent);stroke-dasharray:4 3}
+    .fill-ote{fill:rgba(241,196,15,.1);stroke:rgba(241,196,15,.5);stroke-dasharray:4 3}
+    .fill-ob{fill:rgba(255,255,255,.05);stroke:var(--grid)}
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="container hero-inner">
+      <div>
+        <span class="badge">Guide pédagogique</span>
+        <h1>Analyse Technique — Manuel complet + atlas visuel</h1>
+        <p class="subtitle">Chaque outil a son objectif, ses conditions idéales, une procédure claire et ses limites, avec un mini-graphique pour visualiser le scénario. Contenu éducatif — pas un conseil d’investissement.</p>
+        <div class="cta">
+          <a href="#sommaire" class="btn">Explorer</a>
+          <a href="#exemples" class="btn secondary">Exemples confluence</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="warning"><strong>Note:</strong> Les exemples sont fictifs. Testez en backtest/démo, adaptez à l’actif et gérez le risque (taille, invalidation, ratio R/R).</div>
+        <p class="mini" style="margin-top:8px">Thème: Noir • Jaune • Gris</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="sommaire" class="section">
+      <h2>Sommaire</h2>
+      <div class="toc">
+        <a href="#principes">Principes</a>
+        <a href="#s-r">S/R</a>
+        <a href="#rsi">RSI</a>
+        <a href="#stochastique">Stochastique</a>
+        <a href="#macd">MACD</a>
+        <a href="#bollinger">Bollinger</a>
+        <a href="#ichimoku">Ichimoku</a>
+        <a href="#fibo-ote">Fibonacci & OTE</a>
+        <a href="#order-blocks">Order Blocks</a>
+        <a href="#volume-vwap">Volume & VWAP</a>
+        <a href="#pivots">Points pivots</a>
+        <a href="#adx-atr">ADX & ATR</a>
+        <a href="#breakouts">Breakouts</a>
+        <a href="#exemples">Exemples pas à pas</a>
+        <a href="#plan">Plan & risque</a>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="principes" class="section">
+      <h2>Principes clés</h2>
+      <div class="grid columns-3">
+        <div class="card">
+          <h3>Contexte</h3>
+          <p><strong>Tendance:</strong> privilégier le sens du cadre supérieur. Le contre-tendance exige plus de confirmations.</p>
+          <p><strong>Niveaux:</strong> penser en zones plutôt qu’en lignes; repérer là où le prix a plusieurs réactions.</p>
+        </div>
+        <div class="card">
+          <h3>Confluence</h3>
+          <p><strong>Mix:</strong> niveau + momentum + volume > signal isolé.</p>
+          <p><strong>Volatilité:</strong> calibrer stops/targets avec ATR.</p>
+        </div>
+        <div class="card">
+          <h3>Risque</h3>
+          <p><strong>Avant l’entrée:</strong> inval, taille, objectifs, scénario adverse. Ratio R/R objectivable.</p>
+          <p><strong>Après:</strong> exécuter le plan sans improviser.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="s-r" class="section">
+      <h2>Supports et résistances</h2>
+      <div class="grid columns-2">
+        <div class="card">
+          <div class="exp-grid">
+            <div class="exp"><strong>🎯 Objectif:</strong> Cartographier l’offre/demande; zones où probabilité de réaction est élevée.</div>
+            <div class="exp"><strong>📈 Conditions idéales:</strong> Niveaux visibles (multiples tests), alignés cadre supérieur; volume notable; temps passé au niveau.</div>
+            <div class="exp"><strong>🛠️ Procédure:</strong> 1) Tracer zones à partir de pics de volume/mèches corps. 2) Attendre réaction (rejet/accumulation). 3) Entrer sur retest avec structure (HH/HL ou LH/LL). 4) Stop au-delà de la zone.</div>
+            <div class="exp"><strong>⚠️ Limites:</strong> Niveaux «évidents» → fausses cassures; mèches profondes; horaire/news modifient la fiabilité.</div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Exemple visuel</h3>
+          <div class="example">
+            <p><strong>Scénario:</strong> Range 98–102, cassure à 103 et retest 102.2.</p>
+            <svg viewBox="0 0 200 100" aria-label="Range et cassure">
+              <line x1="10" y1="90" x2="190" y2="90" class="st-grid"/>
+              <rect x="20" y="40" width="160" height="20" class="fill-range"/>
+              <polyline points="20,60 70,60 90,35 120,32 150,48 170,45" class="st-good st-thick" fill="none"/>
+              <text x="24" y="37">102</text><text x="24" y="66">98</text>
+            </svg>
+            <ul>
+              <li><strong>Entrée:</strong> 102.4</li>
+              <li><strong>Stop:</strong> 101.7</li>
+              <li><strong>Objectif:</strong> 105 (hauteur de range projetée)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="rsi" class="section">
+      <h2>RSI</h2>
+      <div class="grid columns-2">
+        <div class="card">
+          <div class="exp-grid">
+            <div class="exp"><strong>🎯 Objectif:</strong> Qualifier surachat/survente et divergences prix/momentum.</div>
+            <div class="exp"><strong>📈 Conditions idéales:</strong> Ranges, tendances modérées; bornes dynamiques 40/60 en tendance forte.</div>
+            <div class="exp"><strong>🛠️ Procédure:</strong> 1) Bornes 30/70 (ou 40/60). 2) Dépassement + retour. 3) Divergence (prix nouveau haut/bas, RSI ne suit pas). 4) Confirmer par cassure mineure/chandelier.</div>
+            <div class="exp"><strong>⚠️ Limites:</strong> Lag en impulsion; faux signaux en volatilité extrême; nécessite confluence S/R.</div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Divergence baissière — visuel</h3>
+          <div class="example">
+            <p><strong>Scénario:</strong> Prix HL1=120 → HL2=121; RSI 72 → 64.</p>
+            <svg viewBox="0 0 200 100" aria-label="Divergence RSI">
+              <line x1="10" y1="85" x2="190" y2="85" class="st-grid"/>
+              <polyline points="20,60 80,40 140,35" class="st-good st-thick" fill="none"/>
+              <line x1="20" y1="30" x2="180" y2="30" class="st-accent st-dash"/>
+              <line x1="20" y1="70" x2="180" y2="70" class="st-accent st-dash"/>
+              <polyline points="20,55 80,45 140,55" class="st-bad" fill="none"/>
+              <text x="182" y="33">70</text><text x="182" y="73">30</text>
+            </svg>
+            <ul>
+              <li><strong>Signal:</strong> divergence baissière</li>
+              <li><strong>Confirm:</strong> cassure d’un plus bas mineur</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="stochastique" class="section">
+      <h2>Stochastique</h2>
+      <div class="grid columns-2">
+        <div class="card">
+          <div class="exp-grid">
+            <div class="exp"><strong>🎯 Objectif:</strong> Timing des retours à la tendance (pullbacks) via extrêmes 20/80.</div>
+            <div class="exp"><strong>📈 Conditions idéales:</strong> Marché tendanciel propre; confluence avec MM/structure; paramètres usuels 14,3,3.</div>
+            <div class="exp"><strong>🛠️ Procédure:</strong> 1) Identifier tendance (EMA50/200, structure). 2) Attendre <20 (haussier) ou >80 (baissier). 3) Entrer au croisement %K>%D côté tendance sur support/résistance.</div>
+            <div class="exp"><strong>⚠️ Limites:</strong> Nombreux faux signaux en range irrégulier; sur-optimisation des paramètres.</div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Pullback haussier — visuel</h3>
+          <div class="example">
+            <p><strong>Scénario:</strong> Prix > EMA50; stoch <20 puis recroise haussier sur un support.</p>
+            <svg viewBox="0 0 200 100" aria-label="Stochastique pullback">
+              <polyline points="20,70 60,60 100,50 140,40 180,35" class="st-good st-thick" fill="none"/>
+              <polyline points="20,75 60,65 100,57 140,48 180,44" class="st-neutral st-dash" fill="none"/>
+              <line x1="20" y1="30" x2="180" y2="30" class="st-accent st-dash"/>
+              <line x1="20" y1="70" x2="180" y2="70" class="st-accent st-dash"/>
+              <polyline points="20,75 60,72 100,68 120,69 140,65 160,60 180,58" class="st-good" fill="none"/>
+              <text x="182" y="33">80</text><text x="182" y="73">20</text>
+            </svg>
+            <ul>
+              <li><strong>Timing:</strong> croisement %K>%D depuis <20</li>
+              <li><strong>Stop:</strong> sous le support</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="macd" class="section">
+      <h2>MACD</h2>
+      <div class="grid columns-2">
+        <div class="card">
+          <div class="exp-grid">
+            <div class="exp"><strong>🎯 Objectif:</strong> Lire les transitions de momentum (zéro, croisements, histogramme) et divergences.</div>
+            <div class="exp"><strong>📈 Conditions idéales:</strong> Après consolidation; en suivi de tendance pour confirmer les reprises.</div>
+            <div class="exp"><strong>🛠️ Procédure:</strong> 1) Repérer passage de l’histogramme de négatif à positif. 2) Chercher cassure d’oblique/structure. 3) Entrer sur retest avec MACD>0 (achat) ou <0 (vente).</div>
+            <div class="exp"><strong>⚠️ Limites:</strong> Indicateur retardé; croisement tardif en marchés très volatils.</div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Transition haussière — visuel</h3>
+          <div class="example">
+            <p><strong>Scénario:</strong> Histogramme passe négatif → positif, cassure d’une oblique.</p>
+            <svg viewBox="0 0 200 100" aria-label="MACD transition">
+              <polyline points="20,70 60,60 100,55 140,45 180,40" class="st-good st-thick" fill="none"/>
+              <line x1="30" y1="80" x2="170" y2="40" class="st-bad st-dash"/>
+              <rect x="40" y="60" width="10" height="10" fill="#8b3a3a"/>
+              <rect x="55" y="58" width="10" height="12" fill="#8b3a3a"/>
+              <rect x="70" y="55" width="10" height="15" fill="#8b3a3a"/>
+              <rect x="85" y="53" width="10" height="17" fill="#8b3a3a"/>
+              <rect x="100" y="50" width="10" height="20" fill="#2f6"/>
+              <rect x="115" y="48" width="10" height="22" fill="#2f6"/>
+            </svg>
+            <ul>
+              <li><strong>Entrée:</strong> au-dessus de l’oblique + MACD>0</li>
+              <li><strong>Stop:</strong> sous le dernier creux</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="bollinger" class="section">
+      <h2>Bandes de Bollinger</h2>
+      <div class="grid columns-2">
+        <div class="card">
+          <div class="exp-grid">
+            <div class="exp"><strong>🎯 Objectif:</strong> Mesurer la volatilité; exploiter squeeze→expansion ou retour à la moyenne (SMA20).</div>
+            <div class="exp"><strong>📈 Conditions idéales:</strong> Squeeze prolongé; marché propre. En tendance, «marcher sur la bande» peut durer.</div>
+            <div class="exp"><strong>🛠️ Procédure:</strong> 1) Identifier squeeze. 2) Déclencheur: clôture hors bande + volume. 3) Entrer sur retest de la bande/médiane. 4) Cibles: largeur du range; trailing sur médiane.</div>
+            <div class="exp"><strong>⚠️ Limites:</strong> Faux breakouts dans ranges bruyants; en tendance, prix reste collé à la bande.</div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Squeeze → expansion — visuel</h3>
+          <div class="example">
+            <p><strong>Scénario:</strong> Squeeze, clôture au-dessus bande sup, retest.</p>
+            <svg viewBox="0 0 200 100" aria-label="Bollinger squeeze">
+              <path d="M20,45 Q60,40 100,45 T180,45" class="st-accent" fill="none"/>
+              <path d="M20,55 Q60,60 100,55 T180,55" class="st-accent" fill="none"/>
+              <polyline points="20,50 80,50 100,35 130,30 160,28 180,27" class="st-good st-thick" fill="none"/>
+            </svg>
+            <ul>
+              <li><strong>Stop:</strong> SMA20 (médiane)</li>
+              <li><strong>Cible:</strong> largeur de range projetée</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ichimoku" class="section">
+      <h2>Nuage d’Ichimoku</h2>
+      <div class="grid columns-2">
+        <div class="card">
+          <div class="exp-grid">
+            <div class="exp"><strong>🎯 Objectif:</strong> Filtre de tendance et niveaux d’équilibre (Tenkan/Kijun, Kumo, Chikou).</div>
+            <div class="exp"><strong>📈 Conditions idéales:</strong> Timeframes H1+; alignement: prix au-dessus du Kumo, Tenkan>Kijun, SSA>SSB (haussier), Chikou libre.</div>
+            <div class="exp"><strong>🛠️ Procédure:</strong> 1) Valider biais (au-dessus/au-dessous Kumo). 2) Entrer sur pullback Kijun/bord Kumo après cassure. 3) Chikou ne doit pas bloquer contre prix/niveaux passés.</div>
+            <div class="exp"><strong>⚠️ Limites:</strong> Trop chargé sur très bas TF; faux signaux dans ranges étroits.</div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Kumo break — visuel</h3>
+          <div class="example">
+            <p><strong>Scénario:</strong> Sortie au-dessus du nuage, pullback sur Kijun.</p>
+            <svg viewBox="0 0 200 100" aria-label="Ichimoku Kumo break">
+              <rect x="20" y="45" width="120" height="20" class="fill-kumo"/>
+              <polyline points="20,70 80,60 120,40 160,35 180,33" class="st-good st-thick" fill="none"/>
+              <polyline points="20,62 80,58 120,50 160,46 180,44" class="st-neutral" fill="none"/>
+              <polyline points="20,66 80,64 120,58 160,54 180,52" class="st-accent" fill="none"/>
+              <text x="24" y="43">Kumo</text>
+            </svg>
+            <ul>
+              <li><strong>Zone d’intérêt:</strong> pullback vers Kijun/bord Kumo</li>
+              <li><strong>Invalidation:</strong> clôture sous Kijun</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="fibo-ote" class="section">
+      <h2>Fibonacci et OTE</h2>
+      <div class="grid columns-2">
+        <div class="card">
+          <div class="exp-grid">
+            <div class="exp"><strong>🎯 Objectif:</strong> Quantifier retracements (38.2/50/61.8/78.6) et définir cibles par extensions.</div>
+            <div class="exp"><strong>📈 Conditions idéales:</strong> Swing clair (point bas/haut net); confluence avec S/R, OB, MM.</div>
+            <div class="exp"><strong>🛠️ Procédure:</strong> 1) Ancrer Fibo sur le swing. 2) Zone OTE: 61.8–78.6. 3) Chercher signal (rejet/chandelier) dans la zone. 4) Stop au-delà de 78.6 ou du swing. 5) Cibles: 0.618 ext, sommet/précédent high, 1.272/1.618.</div>
+            <div class="exp"><strong>⚠️ Limites:</strong> Subjectivité du swing; surajustement; niveaux seuls insuffisants sans structure.</div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>OTE — visuel</h3>
+          <div class="example">
+            <p><strong>Scénario:</strong> Swing 100→120; retracement dans 61.8–78.6.</p>
+            <svg viewBox="0 0 200 100" aria-label="Fibonacci OTE">
+              <polyline points="30,70 60,60 90,50 120,40 150,30" class="st-good st-thick" fill="none"/>
+              <line x1="30" y1="70" x2="150" y2="70" class="st-grid"/>
+              <line x1="30" y1="30" x2="150" y2="30" class="st-grid"/>
+              <rect x="90" y="42" width="40" height="28" class="fill-ote"/>
+              <text x="132" y="40">61.8%</text><text x="132" y="68">78.6%</text>
+            </svg>
+            <ul>
+              <li><strong>Zone OTE:</strong> confluence avec support</li>
+              <li><strong>Stop:</strong> sous 78.6%</li>
+              <li><strong>Cibles:</strong> 118 puis 122 (extension)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="order-blocks" class="section">
+      <h2>Order Blocks</h2>
+      <div class="grid columns-2">
+        <div class="card">
+          <div class="exp-grid">
+            <div class="exp"><strong>🎯 Objectif:</strong> Repérer la dernière bougie opposée avant une impulsion (zone d’offre/demande institutionnelle).</div>
+            <div class="exp"><strong>📈 Conditions idéales:</strong> Déplacement net (displacement), éventuelle FVG; structure claire HH/HL ou LH/LL.</div>
+            <div class="exp"><strong>🛠️ Procédure:</strong> 1) Marquer OB (open→wick). 2) Attendre retour du prix dans la zone. 3) Chercher rejet/structure LTF. 4) Stop: au-delà de la zone; cible: origine de l’impulsion/prior high.</div>
+            <div class="exp"><strong>⚠️ Limites:</strong> Identification subjective; «mitigation» partielle fréquente; faux retours en tendance faible.</div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Retest — visuel</h3>
+          <div class="example">
+            <p><strong>Scénario:</strong> Impulsion 105→112 après une bougie rouge 104.8–105.6 (OB haussier).</p>
+            <svg viewBox="0 0 200 100" aria-label="Order Block retest">
+              <rect x="40" y="55" width="30" height="12" class="fill-ob"/>
+              <polyline points="20,70 50,68 60,66 80,55 110,40 140,35 170,33" class="st-good st-thick" fill="none"/>
+              <text x="42" y="52">OB</text>
+            </svg>
+            <ul>
+              <li><strong>Retour:</strong> test de 105.4–105.8</li>
+              <li><strong>Invalidation:</strong> clôture sous 104.7</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="volume-vwap" class="section">
+      <h2>Volume, profil & VWAP</h2>
+      <div class="grid columns-2">
+        <div class="card">
+          <div class="exp-grid">
+            <div class="exp"><strong>🎯 Objectif:</strong> VWAP comme moyenne pondérée de référence intraday; jouer le retour à la moyenne ou le suivi au-dessus/dessous.</div>
+            <div class="exp"><strong>📈 Conditions idéales:</strong> Journées intraday normales (hors news majeures); bandes ±σ pour repérer extensions.</div>
+            <div class="exp"><strong>🛠️ Procédure:</strong> 1) Si prix étendu à -2σ, chercher retournement vers VWAP. 2) En tendance, acheter pullback au VWAP si flux > moyenne. 3) Cibles: VWAP puis ±1σ.</div>
+            <div class="exp"><strong>⚠️ Limites:</strong> Journées en forte tendance: pas de retour au VWAP; volume faible (midday) dégrade les signaux.</div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Mean reversion — visuel</h3>
+          <div class="example">
+            <p><strong>Scénario:</strong> Prix sous VWAP -2σ puis rebond vers VWAP.</p>
+            <svg viewBox="0 0 200 100" aria-label="VWAP et bandes">
+              <polyline points="20,50 180,50" class="st-accent" fill="none"/>
+              <polyline points="20,35 180,35" class="st-accent st-dash" fill="none"/>
+              <polyline points="20,65 180,65" class="st-accent st-dash" fill="none"/>
+              <polyline points="20,70 60,72 90,68 120,63 150,58 180,54" class="st-good st-thick" fill="none"/>
+              <text x="182" y="52">VWAP</text>
+            </svg>
+            <ul>
+              <li><strong>Entrée:</strong> signal de retournement local</li>
+              <li><strong>Take:</strong> VWAP puis +1σ</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pivots" class="section">
+      <h2>Points pivots</h2>
+      <div class="grid columns-2">
+        <div class="card">
+          <div class="exp-grid">
+            <div class="exp"><strong>🎯 Objectif:</strong> Niveaux de référence intraday (P, S/R) issus du range précédent; aimants de prix.</div>
+            <div class="exp"><strong>📈 Conditions idéales:</strong> Marchés liquides; sessions régulières; meilleure lecture avec volume/volatilité typiques.</div>
+            <div class="exp"><strong>🛠️ Procédure:</strong> 1) Cartographier P, S1/S2, R1/R2. 2) Sur rejet de R1, viser P; sur soutien S1, viser P/R1. 3) Stop au-delà du niveau contrarié.</div>
+            <div class="exp"><strong>⚠️ Limites:</strong> Sensibilité à l’actif; jours d’annonce: dépassements prolongés.</div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Intraday — visuel</h3>
+          <div class="example">
+            <p><strong>Scénario:</strong> Rejet sur R1, retour vers P.</p>
+            <svg viewBox="0 0 200 100" aria-label="Points pivots">
+              <line x1="20" y1="50" x2="180" y2="50" class="st-accent"/><text x="182" y="52">P</text>
+              <line x1="20" y1="35" x2="180" y2="35" class="st-accent st-dash"/><text x="182" y="37">R1</text>
+              <line x1="20" y1="65" x2="180" y2="65" class="st-accent st-dash"/><text x="182" y="67">S1</text>
+              <polyline points="20,55 60,38 90,36 120,40 150,48 180,52" class="st-bad st-thick" fill="none"/>
+            </svg>
+            <ul>
+              <li><strong>Stop:</strong> au-dessus de R1</li>
+              <li><strong>Cible:</strong> P puis S1</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="adx-atr" class="section">
+      <h2>ADX & ATR</h2>
+      <div class="grid columns-2">
+        <div class="card">
+          <h3>ADX</h3>
+          <div class="exp-grid">
+            <div class="exp"><strong>🎯 Objectif:</strong> Mesurer la force de tendance; filtre de stratégie (>~25 tendance exploitable).</div>
+            <div class="exp"><strong>📈 Conditions idéales:</strong> Après transition de marché; utile pour éviter le range si stratégie trend-following.</div>
+            <div class="exp"><strong>🛠️ Procédure:</strong> 1) Si ADX↑ au-dessus de ~25, privilégier breakouts/pullbacks directionnels. 2) Si ADX bas, privilégier mean-reversion.</div>
+            <div class="exp"><strong>⚠️ Limites:</strong> Retardé; seuils varient selon l’actif/TF.</div>
+          </div>
+          <div class="example" style="margin-top:10px">
+            <svg viewBox="0 0 200 100" aria-label="ADX">
+              <line x1="20" y1="55" x2="180" y2="55" class="st-accent st-dash"/><text x="182" y="57">25</text>
+              <polyline points="20,80 60,70 100,60 140,50 180,45" class="st-good st-thick" fill="none"/>
+            </svg>
+            <ul>
+              <li><strong>Filtre:</strong> activer stratégies de tendance</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <h3>ATR</h3>
+          <div class="exp-grid">
+            <div class="exp"><strong>🎯 Objectif:</strong> Calibrer stops/targets et taille de position à la volatilité.</div>
+            <div class="exp"><strong>📈 Conditions idéales:</strong> Toujours pertinent; surtout quand la vol change rapidement.</div>
+            <div class="exp"><strong>🛠️ Procédure:</strong> 1) Mesurer ATR(14). 2) Stop = 1.3–1.8×ATR au-delà de l’invalidation. 3) Cibles en multiples de R ou niveaux techniques.</div>
+            <div class="exp"><strong>⚠️ Limites:</strong> Ne tient pas compte des gaps; ATR variable selon le TF.</div>
+          </div>
+          <div class="example" style="margin-top:10px">
+            <p><strong>Scénario:</strong> ATR(14)=0.8 → stop = 1.5×ATR = 1.2 pt.</p>
+            <svg viewBox="0 0 200 100" aria-label="ATR stop">
+              <polyline points="40,70 80,60 120,55 160,50" class="st-good st-thick" fill="none"/>
+              <line x1="120" y1="55" x2="180" y2="55" class="st-good"/>
+              <line x1="120" y1="67" x2="180" y2="67" class="st-bad"/>
+              <text x="182" y="57">Entrée</text><text x="182" y="69">Stop (1.5×ATR)</text>
+              <line x1="175" y1="55" x2="175" y2="67" class="st-neutral"/>
+              <text x="150" y="45">1.2 pt</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="breakouts" class="section">
+      <h2>Breakouts & retests</h2>
+      <div class="grid columns-2">
+        <div class="card">
+          <div class="exp-grid">
+            <div class="exp"><strong>🎯 Objectif:</strong> Capturer les expansions hors range/oblique.</div>
+            <div class="exp"><strong>📈 Conditions idéales:</strong> Ranges serrés (NR), squeeze de volatilité, catalyseur (volume, news).</div>
+            <div class="exp"><strong>🛠️ Procédure:</strong> 1) Définir range/ligne. 2) Attendre clôture hors niveau + volume. 3) Entrer au retest validé. 4) Cible: hauteur de range/mesure; stop: retour dans le range.</div>
+            <div class="exp"><strong>⚠️ Limites:</strong> Breakouts sans volume = piégeux; slippage sur news.</div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Hauteur de range — visuel</h3>
+          <div class="example">
+            <p><strong>Scénario:</strong> Range 95–100 (H=5), cassure et retest 100.3.</p>
+            <svg viewBox="0 0 200 100" aria-label="Breakout retest">
+              <rect x="20" y="50" width="130" height="15" class="fill-range"/>
+              <polyline points="20,65 80,65 100,40 130,35 160,33 180,32" class="st-good st-thick" fill="none"/>
+              <line x1="150" y1="33" x2="150" y2="28" class="st-accent"/>
+              <text x="152" y="30">≈ +5</text>
+            </svg>
+            <ul>
+              <li><strong>Objectif théorique:</strong> 105</li>
+              <li><strong>Invalidation:</strong> retour sous 99.7 (clôture)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="exemples" class="section">
+      <h2>Exemples pas à pas (confluence)</h2>
+
+      <details open>
+        <summary><span>▶</span> Exemple 1 — Ichimoku + S/R + RSI</summary>
+        <div class="grid columns-2" style="margin-top:10px">
+          <div class="card">
+            <h3>Contexte</h3>
+            <ul>
+              <li><strong>Cadre:</strong> 4H haussier (prix au-dessus du Kumo)</li>
+              <li><strong>Niveau:</strong> ancienne résistance 118 devient support</li>
+              <li><strong>Momentum:</strong> RSI rebondit de 42→52</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Visuel + plan</h3>
+            <div class="example">
+              <svg viewBox="0 0 200 100" aria-label="Confluence Ichimoku">
+                <rect x="20" y="52" width="80" height="18" class="fill-kumo"/>
+                <line x1="20" y1="60" x2="180" y2="60" class="st-accent st-dash"/><text x="182" y="62">118</text>
+                <polyline points="20,70 60,62 90,50 130,42 160,38" class="st-good st-thick" fill="none"/>
+                <polyline points="20,64 60,60 90,56 130,50 160,47" class="st-accent" fill="none"/>
+              </svg>
+              <ol>
+                <li><strong>Timing:</strong> clôture haussière au-dessus du niveau</li>
+                <li><strong>Stop:</strong> sous Kijun et 118</li>
+                <li><strong>Objectifs:</strong> 121 puis 123.5</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary><span>▶</span> Exemple 2 — OTE + Order Block + Stochastique</summary>
+        <div class="grid columns-2" style="margin-top:10px">
+          <div class="card">
+            <h3>Repérage</h3>
+            <ul>
+              <li><strong>Swing:</strong> 100→120</li>
+              <li><strong>OTE:</strong> 61.8–78.6 en confluence 110–111</li>
+              <li><strong>OB:</strong> bougie rouge 109.8–110.6</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Visuel + plan</h3>
+            <div class="example">
+              <svg viewBox="0 0 200 100" aria-label="Confluence OTE + OB">
+                <polyline points="30,70 60,60 90,50 120,40 150,30" class="st-good st-thick" fill="none"/>
+                <rect x="90" y="42" width="40" height="28" class="fill-ote"/>
+                <rect x="95" y="55" width="25" height="10" class="fill-ob"/>
+                <text x="132" y="40">61.8%</text><text x="132" y="68">78.6%</text><text x="96" y="52">OB</text>
+              </svg>
+              <ul>
+                <li><strong>Entrée:</strong> rejet haussier dans l’OB</li>
+                <li><strong>Stop:</strong> sous 78.6%</li>
+                <li><strong>Cibles:</strong> 116 puis 121</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary><span>▶</span> Exemple 3 — Breakout + Bollinger + Volume</summary>
+        <div class="grid columns-2" style="margin-top:10px">
+          <div class="card">
+            <h3>Setup</h3>
+            <ul>
+              <li><strong>Squeeze:</strong> bandes serrées 98–100</li>
+              <li><strong>Volume:</strong> pic sur cassure 100.4</li>
+              <li><strong>Retest:</strong> 100.1 → mèche acheteuse</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Visuel + gestion</h3>
+            <div class="example">
+              <svg viewBox="0 0 200 100" aria-label="Breakout + Bollinger + Volume">
+                <path d="M20,45 Q60,43 100,45 T180,45" class="st-accent" fill="none"/>
+                <path d="M20,55 Q60,57 100,55 T180,55" class="st-accent" fill="none"/>
+                <polyline points="20,50 80,50 100,35 130,30 160,28" class="st-good st-thick" fill="none"/>
+                <rect x="95" y="70" width="8" height="15" fill="#666"/>
+                <rect x="105" y="60" width="8" height="25" fill="#999"/>
+                <rect x="115" y="45" width="8" height="40" fill="#ccc"/>
+              </svg>
+              <ul>
+                <li><strong>Stop:</strong> sous la médiane (SMA20)</li>
+                <li><strong>Sortie:</strong> partielle à 1R, cible largeur range</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary><span>▶</span> Exemple 4 — Intraday VWAP + Pivots + ATR</summary>
+        <div class="grid columns-2" style="margin-top:10px">
+          <div class="card">
+            <h3>Lecture</h3>
+            <ul>
+              <li><strong>Ouverture:</strong> sous VWAP, rebond S1 → VWAP</li>
+              <li><strong>ATR(14):</strong> 0.6 → stop ≈ 0.9</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Visuel + exécution</h3>
+            <div class="example">
+              <svg viewBox="0 0 200 100" aria-label="VWAP + Pivots + ATR">
+                <line x1="20" y1="50" x2="180" y2="50" class="st-accent"/><text x="182" y="52">VWAP</text>
+                <line x1="20" y1="65" x2="180" y2

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Patterns de trading – Guide visuel</title>
+  <style>
+    :root {
+      --bg: #000000;
+      --fg: #FFD700;
+      --muted: #9AA0A6;
+      --card: #111215;
+      --card-border: #2A2D33;
+      --accent: #FFD700;
+      --axis: #3a3f47;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      line-height: 1.45;
+    }
+    header {
+      padding: 28px 20px 10px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    header h1 { margin: 0 0 8px; font-size: 1.6rem; }
+    header p { margin: 0 0 12px; color: var(--muted); max-width: 1000px; }
+    .notice {
+      background: #0E0F12; border: 1px solid var(--card-border);
+      color: var(--muted); padding: 10px 12px; border-radius: 10px; max-width: 1000px;
+    }
+    .wrap { padding: 22px 20px 40px; max-width: 1300px; margin: 0 auto; }
+    .grid {
+      display: grid; gap: 16px;
+      grid-template-columns: repeat(4, minmax(260px, 1fr));
+    }
+    @media (max-width: 1200px) { .grid { grid-template-columns: repeat(3, minmax(260px, 1fr)); } }
+    @media (max-width: 900px)  { .grid { grid-template-columns: repeat(2, minmax(260px, 1fr)); } }
+    @media (max-width: 560px)  { .grid { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--card); border: 1px solid var(--card-border);
+      border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px;
+    }
+    .card h3 { margin: 0; font-size: 1rem; letter-spacing: 0.2px; }
+    .meta { display: flex; flex-wrap: wrap; gap: 10px 14px; font-size: 0.86rem; color: var(--muted); }
+    .meta b { color: var(--fg); font-weight: 600; }
+    .desc { color: var(--muted); font-size: 0.95rem; }
+    .tag {
+      display: inline-block; border: 1px solid var(--card-border);
+      color: var(--muted); padding: 2px 8px; border-radius: 999px; font-size: 0.78rem;
+    }
+    .svgbox {
+      background: #0B0C0E; border: 1px dashed var(--card-border); border-radius: 10px;
+      padding: 8px; display: flex; align-items: center; justify-content: center;
+    }
+    footer {
+      color: var(--muted); border-top: 1px solid var(--card-border);
+      padding: 18px 20px 34px; margin-top: 24px; font-size: 0.9rem;
+    }
+    /* helpers */
+    .axis { stroke: var(--axis); stroke-width: 1; }
+    .price { stroke: var(--fg); stroke-width: 2; fill: none; }
+    .line { stroke: var(--fg); stroke-width: 2; }
+    .guide { stroke: var(--fg); stroke-dasharray: 4 4; opacity: .5; }
+    .target { stroke: var(--fg); stroke-width: 2; marker-end: url(#arrow); }
+    .fill { fill: rgba(255,215,0,.08); stroke: var(--fg); stroke-width: 2; }
+    .level { stroke: var(--fg); stroke-width: 2; opacity: .7; }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L6,3 z" fill="#FFD700"></path>
+      </marker>
+    </defs>
+  </svg>
+
+  <header>
+    <h1>Patterns de trading – Guide visuel</h1>
+    <p>Chaque carte illustre la figure, sa nature (retournement / continuation / bilatérale), et comment l’utiliser: entrée, invalidation, objectif. Combine toujours avec tendance, niveaux S/R et volumes.</p>
+    <div class="notice">
+      Discipline: attends la clôture de cassure ou le pullback. Place un stop logique. Mesure ton objectif. Ne force jamais un trade sans ratio risque/rendement correct.
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="grid">
+
+      <!-- 1. Tête-épaules -->
+      <article class="card">
+        <h3>Tête-épaules (H&S)</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" role="img" aria-label="Tête-épaules">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <polyline points="20,100 60,60 90,100 130,40 170,100 210,70 240,120" class="price"/>
+            <line x1="50" y1="100" x2="190" y2="100" class="level"/>
+            <line x1="190" y1="100" x2="190" y2="60" class="target"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Retournement</span>
+          <span><b>Tendance:</b> Baissière</span>
+          <span><b>Ligne clé:</b> Ligne de cou</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Cassure confirmée de la ligne de cou (ou pullback). <b>Invalidation:</b> Retour durable au-dessus de la nuque. <b>Objectif:</b> Distance tête→nuque projetée sous la cassure.</p>
+      </article>
+
+      <!-- 2. Tête-épaules inversée -->
+      <article class="card">
+        <h3>Tête-épaules inversée</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="H&S inversée">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <polyline points="20,40 60,80 90,40 130,100 170,40 210,70 240,20" class="price"/>
+            <line x1="50" y1="60" x2="190" y2="60" class="level"/>
+            <line x1="190" y1="60" x2="190" y2="20" class="target"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Retournement</span>
+          <span><b>Tendance:</b> Haussière</span>
+          <span><b>Ligne clé:</b> Ligne de cou</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Cassure/ pullback au-dessus de la nuque. <b>Invalidation:</b> Retour sous la nuque. <b>Objectif:</b> Tête→nuque projetée vers le haut.</p>
+      </article>
+
+      <!-- 3. Double sommet -->
+      <article class="card">
+        <h3>Double sommet (M)</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="Double top">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <polyline points="20,100 60,40 100,100 140,40 180,100 220,120" class="price"/>
+            <line x1="40" y1="100" x2="200" y2="100" class="level"/>
+            <line x1="200" y1="100" x2="200" y2="130" class="target"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Retournement</span>
+          <span><b>Tendance:</b> Baissière</span>
+          <span><b>Niveau:</b> Ligne de cou</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Cassure de la ligne de cou. <b>Invalidation:</b> Nouveau plus haut au-dessus des pics. <b>Objectif:</b> Hauteur sommet→nuque projetée vers le bas.</p>
+      </article>
+
+      <!-- 4. Double creux -->
+      <article class="card">
+        <h3>Double creux (W)</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="Double bottom">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <polyline points="20,40 60,100 100,40 140,100 180,60 220,20" class="price"/>
+            <line x1="40" y1="80" x2="200" y2="80" class="level"/>
+            <line x1="200" y1="80" x2="200" y2="40" class="target"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Retournement</span>
+          <span><b>Tendance:</b> Haussière</span>
+          <span><b>Niveau:</b> Ligne de cou</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Cassure de la ligne de cou (ou pullback). <b>Invalidation:</b> Retour sous le creux. <b>Objectif:</b> Hauteur creux→nuque projetée vers le haut.</p>
+      </article>
+
+      <!-- 5. Triple sommet -->
+      <article class="card">
+        <h3>Triple sommet</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="Triple top">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <polyline points="20,100 60,40 90,100 130,40 160,100 200,40 230,120" class="price"/>
+            <line x1="40" y1="100" x2="210" y2="100" class="level"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Retournement</span>
+          <span><b>Tendance:</b> Baissière</span>
+          <span><b>Niveau:</b> Support clé</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Cassure du support. <b>Invalidation:</b> Clôture au-dessus des sommets. <b>Objectif:</b> Hauteur pattern reportée.</p>
+      </article>
+
+      <!-- 6. Triple creux -->
+      <article class="card">
+        <h3>Triple creux</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="Triple bottom">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <polyline points="20,40 60,100 90,40 130,100 160,40 200,100 230,20" class="price"/>
+            <line x1="40" y1="80" x2="210" y2="80" class="level"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Retournement</span>
+          <span><b>Tendance:</b> Haussière</span>
+          <span><b>Niveau:</b> Résistance clé</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Cassure de résistance. <b>Invalidation:</b> Retour sous les creux. <b>Objectif:</b> Hauteur reportée.</p>
+      </article>
+
+      <!-- 7. Diamant -->
+      <article class="card">
+        <h3>Diamant</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="Diamond">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <polygon points="60,70 100,40 140,70 100,100" class="fill"/>
+            <polyline points="20,90 60,70 100,40 140,70 180,90 220,120" class="price"/>
+            <line x1="140" y1="70" x2="220" y2="40" class="target"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Retournement</span>
+          <span><b>Tendance:</b> Variable</span>
+          <span><b>Contexte:</b> Sommet/creux</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Cassure de la bordure. <b>Invalidation:</b> Réintégration. <b>Objectif:</b> Hauteur du diamant projetée.</p>
+      </article>
+
+      <!-- 8. Rounding top -->
+      <article class="card">
+        <h3>Rounding top (arrondi)</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="Rounding top">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <path d="M20,100 Q130,20 240,100" class="price"/>
+            <line x1="40" y1="100" x2="220" y2="100" class="level"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Retournement</span>
+          <span><b>Tendance:</b> Baissière</span>
+          <span><b>Niveau:</b> Support</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Cassure du support horizontal. <b>Invalidation:</b> Repasser au-dessus de l’arc. <b>Objectif:</b> Hauteur arrondi.</p>
+      </article>
+
+      <!-- 9. Rounding bottom -->
+      <article class="card">
+        <h3>Rounding bottom (soucoupe)</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="Rounding bottom">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <path d="M20,40 Q130,120 240,40" class="price"/>
+            <line x1="40" y1="60" x2="220" y2="60" class="level"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Retournement</span>
+          <span><b>Tendance:</b> Haussière</span>
+          <span><b>Niveau:</b> Résistance</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Cassure de résistance. <b>Invalidation:</b> Réintégration. <b>Objectif:</b> Hauteur de la base.</p>
+      </article>
+
+      <!-- 10. V-bottom -->
+      <article class="card">
+        <h3>V-bottom</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="V-bottom">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <polyline points="20,20 100,100 180,20 240,10" class="price"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Retournement rapide</span>
+          <span><b>Tendance:</b> Haussière</span>
+          <span><b>Contexte:</b> Capitulation</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Reprise au-dessus du pivot. <b>Invalidation:</b> Repasser sous le pivot. <b>Objectif:</b> Zones S/R au-dessus (pas de mesure standard).</p>
+      </article>
+
+      <!-- 11. 1-2-3 reversal -->
+      <article class="card">
+        <h3>1-2-3 Retournement</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="1-2-3 pattern">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <polyline points="20,110 80,40 120,80 180,30 220,60" class="price"/>
+            <circle cx="80" cy="40" r="3" fill="#FFD700"/>
+            <circle cx="120" cy="80" r="3" fill="#FFD700"/>
+            <circle cx="180" cy="30" r="3" fill="#FFD700"/>
+            <line x1="120" y1="80" x2="200" y2="80" class="level"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Retournement</span>
+          <span><b>Tendance:</b> Haussière/Baissière</span>
+          <span><b>Déclencheur:</b> Point 2</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Cassure du point 2 après le point 3. <b>Invalidation:</b> Rupture du point 3. <b>Objectif:</b> Amplitudes de swings ou S/R.</p>
+      </article>
+
+      <!-- 12. Drapeau haussier -->
+      <article class="card">
+        <h3>Drapeau haussier (Bull flag)</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="Bull flag">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <line x1="40" y1="110" x2="100" y2="40" class="line"/>
+            <polygon points="100,40 160,60 160,80 100,60" class="fill"/>
+            <line x1="160" y1="70" x2="220" y2="20" class="target"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Continuation</span>
+          <span><b>Tendance:</b> Haussière</span>
+          <span><b>Mesure:</b> Mât</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Cassure du drapeau. <b>Invalidation:</b> Sortie par le bas. <b>Objectif:</b> Longueur du mât projetée.</p>
+      </article>
+
+      <!-- 13. Drapeau baissier -->
+      <article class="card">
+        <h3>Drapeau baissier (Bear flag)</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="Bear flag">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <line x1="40" y1="40" x2="100" y2="110" class="line"/>
+            <polygon points="100,110 160,90 160,72 100,92" class="fill"/>
+            <line x1="160" y1="82" x2="220" y2="130" class="target"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Continuation</span>
+          <span><b>Tendance:</b> Baissière</span>
+          <span><b>Mesure:</b> Mât</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Cassure par le bas. <b>Invalidation:</b> Réintégration. <b>Objectif:</b> Mât projeté.</p>
+      </article>
+
+      <!-- 14. Fanion haussier -->
+      <article class="card">
+        <h3>Fanion haussier (Pennant)</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="Bull pennant">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <line x1="40" y1="110" x2="100" y2="40" class="line"/>
+            <polygon points="100,40 150,60 100,80" class="fill"/>
+            <line x1="150" y1="60" x2="220" y2="20" class="target"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Continuation</span>
+          <span><b>Tendance:</b> Haussière</span>
+          <span><b>Mesure:</b> Mât</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Cassure du fanion. <b>Invalidation:</b> Sortie opposée. <b>Objectif:</b> Mât projeté.</p>
+      </article>
+
+      <!-- 15. Fanion baissier -->
+      <article class="card">
+        <h3>Fanion baissier</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="Bear pennant">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <line x1="40" y1="30" x2="100" y2="100" class="line"/>
+            <polygon points="100,100 150,80 100,60" class="fill"/>
+            <line x1="150" y1="80" x2="220" y2="130" class="target"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Continuation</span>
+          <span><b>Tendance:</b> Baissière</span>
+          <span><b>Mesure:</b> Mât</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Cassure vers le bas. <b>Invalidation:</b> Réintégration. <b>Objectif:</b> Mât projeté.</p>
+      </article>
+
+      <!-- 16. Triangle symétrique -->
+      <article class="card">
+        <h3>Triangle symétrique</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="Symmetrical triangle">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <polygon points="80,40 180,80 80,80" class="fill"/>
+            <polyline points="20,100 80,80 130,70 160,60 190,55 230,60" class="price"/>
+            <line x1="180" y1="60" x2="230" y2="40" class="target"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Bilateral</span>
+          <span><b>Tendance:</b> Selon cassure</span>
+          <span><b>Mesure:</b> Hauteur base</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Cassure confirmée. <b>Invalidation:</b> Réintégration. <b>Objectif:</b> Hauteur du triangle projetée.</p>
+      </article>
+
+      <!-- 17. Triangle ascendant -->
+      <article class="card">
+        <h3>Triangle ascendant</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="Ascending triangle">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <line x1="60" y1="60" x2="200" y2="60" class="level"/>
+            <line x1="60" y1="100" x2="200" y2="60" class="line"/>
+            <line x1="200" y1="60" x2="230" y2="30" class="target"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Continuation</span>
+          <span><b>Tendance:</b> Plutôt haussière</span>
+          <span><b>Mesure:</b> Hauteur</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Cassure de la résistance plate. <b>Invalidation:</b> Rupture de la ligne montante. <b>Objectif:</b> Hauteur projetée.</p>
+      </article>
+
+      <!-- 18. Triangle descendant -->
+      <article class="card">
+        <h3>Triangle descendant</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="Descending triangle">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <line x1="60" y1="90" x2="200" y2="90" class="level"/>
+            <line x1="60" y1="50" x2="200" y2="90" class="line"/>
+            <line x1="200" y1="90" x2="230" y2="120" class="target"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Continuation</span>
+          <span><b>Tendance:</b> Plutôt baissière</span>
+          <span><b>Mesure:</b> Hauteur</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Cassure du support plat. <b>Invalidation:</b> Cassure au-dessus de la diagonale. <b>Objectif:</b> Hauteur projetée.</p>
+      </article>
+
+      <!-- 19. Rising wedge -->
+      <article class="card">
+        <h3>Wedge ascendant (rising)</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="Rising wedge">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <polygon points="80,100 200,60 200,80 80,120" class="fill"/>
+            <polyline points="80,120 110,110 140,103 170,95 200,90" class="price"/>
+            <line x1="180" y1="80" x2="220" y2="120" class="target"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Retournement/Continuation</span>
+          <span><b>Tendance:</b> Souvent baissière</span>
+          <span><b>Mesure:</b> Hauteur</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Cassure par le bas. <b>Invalidation:</b> Réintégration. <b>Objectif:</b> Hauteur du wedge.</p>
+      </article>
+
+      <!-- 20. Falling wedge -->
+      <article class="card">
+        <h3>Wedge descendant (falling)</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="Falling wedge">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <polygon points="80,40 200,80 200,60 80,20" class="fill"/>
+            <polyline points="80,20 110,30 140,37 170,45 200,50" class="price"/>
+            <line x1="180" y1="60" x2="220" y2="30" class="target"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Retournement/Continuation</span>
+          <span><b>Tendance:</b> Souvent haussière</span>
+          <span><b>Mesure:</b> Hauteur</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Cassure par le haut. <b>Invalidation:</b> Réintégration. <b>Objectif:</b> Hauteur du wedge.</p>
+      </article>
+
+      <!-- 21. Rectangle (range) -->
+      <article class="card">
+        <h3>Rectangle (Range)</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="Rectangle">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <rect x="60" y="50" width="120" height="40" class="fill"/>
+            <polyline points="40,90 80,60 100,85 130,55 160,80 180,60 210,100" class="price"/>
+            <line x1="180" y1="70" x2="230" y2="30" class="target"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Bilateral</span>
+          <span><b>Tendance:</b> Selon cassure</span>
+          <span><b>Mesure:</b> Hauteur</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Cassure + volumes; pullback utile. <b>Invalidation:</b> Réintégration. <b>Objectif:</b> Hauteur du range.</p>
+      </article>
+
+      <!-- 22. Canal haussier -->
+      <article class="card">
+        <h3>Canal haussier</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="Ascending channel">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <polygon points="60,110 200,70 200,90 60,130" class="fill"/>
+            <polyline points="60,130 90,120 120,112 150,100 180,92 210,80" class="price"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Poursuite</span>
+          <span><b>Tendance:</b> Haussière</span>
+          <span><b>Stratégie:</b> Buy dips</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Bas du canal / cassure haute. <b>Invalidation:</b> Sortie basse. <b>Objectif:</b> Bord opposé / extension.</p>
+      </article>
+
+      <!-- 23. Canaux baissier -->
+      <article class="card">
+        <h3>Canal baissier</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="Descending channel">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <polygon points="60,50 200,90 200,70 60,30" class="fill"/>
+            <polyline points="60,30 90,40 120,52 150,64 180,76 210,88" class="price"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Poursuite</span>
+          <span><b>Tendance:</b> Baissière</span>
+          <span><b>Stratégie:</b> Sell rallies</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Haut du canal / cassure basse. <b>Invalidation:</b> Sortie haute. <b>Objectif:</b> Bord opposé.</p>
+      </article>
+
+      <!-- 24. Broadening (mégaphone) -->
+      <article class="card">
+        <h3>Broadening (Mégaphone)</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="Broadening">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <polygon points="80,60 200,30 200,90 80,120" class="fill"/>
+            <polyline points="80,120 110,90 140,110 170,70 200,90" class="price"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Volatilité</span>
+          <span><b>Tendance:</b> Bilatérale</span>
+          <span><b>Risque:</b> Élevé</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Cassure confirmée uniquement. <b>Invalidation:</b> Réintégration. <b>Objectif:</b> Hauteur centrale.</p>
+      </article>
+
+      <!-- 25. Tasse avec anse -->
+      <article class="card">
+        <h3>Tasse avec anse</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="Cup and handle">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <path d="M40,50 Q130,110 220,50" class="price"/>
+            <rect x="180" y="55" width="40" height="20" class="fill"/>
+            <line x1="220" y1="50" x2="240" y2="30" class="target"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Continuation</span>
+          <span><b>Tendance:</b> Haussière</span>
+          <span><b>Mesure:</b> Profondeur tasse</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Cassure du bord droit de la tasse/anse. <b>Invalidation:</b> Échec sous l’anse. <b>Objectif:</b> Profondeur projetée.</p>
+      </article>
+
+      <!-- 26. VCP -->
+      <article class="card">
+        <h3>VCP (Volatility Contraction Pattern)</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="VCP">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <polyline points="20,90 80,40 120,70 150,50 170,60 185,54 198,58 210,55 220,56" class="price"/>
+            <line x1="190" y1="52" x2="240" y2="30" class="target"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Continuation</span>
+          <span><b>Tendance:</b> Haussière</span>
+          <span><b>Signal:</b> Contractions</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Cassure de la dernière contraction. <b>Invalidation:</b> Retour dans la base. <b>Objectif:</b> Extension/mesure précédente.</p>
+      </article>
+
+      <!-- 27. Trois méthodes ascendantes -->
+      <article class="card">
+        <h3>Trois méthodes ascendantes</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="Rally, petites baissières internes, reprise">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <rect x="40" y="70" width="14" height="40" class="fill"/>
+            <rect x="80" y="80" width="10" height="18" class="fill" style="opacity:.6"/>
+            <rect x="96" y="82" width="10" height="16" class="fill" style="opacity:.6"/>
+            <rect x="112" y="84" width="10" height="14" class="fill" style="opacity:.6"/>
+            <rect x="150" y="50" width="14" height="60" class="fill"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Continuation</span>
+          <span><b>Tendance:</b> Haussière</span>
+          <span><b>Setup:</b> Pause ordonnée</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Reprise après la pause. <b>Invalidation:</b> Rupture sous la base. <b>Objectif:</b> Amplitude précédente.</p>
+      </article>
+
+      <!-- 28. Trois méthodes descendantes -->
+      <article class="card">
+        <h3>Trois méthodes descendantes</h3>
+        <div class="svgbox">
+          <svg width="260" height="140" aria-label="Drop, petites haussières internes, reprise down">
+            <line x1="10" y1="120" x2="250" y2="120" class="axis"/>
+            <rect x="40" y="40" width="14" height="60" class="fill" style="opacity:.9"/>
+            <rect x="80" y="54" width="10" height="18" class="fill" style="opacity:.6"/>
+            <rect x="96" y="52" width="10" height="20" class="fill" style="opacity:.6"/>
+            <rect x="112" y="50" width="10" height="22" class="fill" style="opacity:.6"/>
+            <rect x="150" y="46" width="14" height="54" class="fill" style="opacity:.9"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <span class="tag">Continuation</span>
+          <span><b>Tendance:</b> Baissière</span>
+          <span><b>Setup:</b> Pause ordonnée</span>
+        </div>
+        <p class="desc"><b>Entrée:</b> Reprise baissière. <b>Invalidation:</b> Reprise au-dessus de la base. <b>Objectif:</b> Amplitude précédente.</p>
+      </article>
+
+    </div>
+  </div>
+
+  <footer>
+    Rappel: aucun pattern n’est magique. La clé, c’est le contexte, la confirmation, et une gestion du risque stricte (stop logique, taille de position, objectifs mesurés).
+  </footer>
+</body>
+</html>
